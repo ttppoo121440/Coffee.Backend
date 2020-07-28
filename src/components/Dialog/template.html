@@ -1,0 +1,34 @@
+<el-dialog
+  center
+  :title="title"
+  :width="dialogWidth"
+  :visible.sync="Visible"
+  :before-close="dialogClose"
+  :destroy-on-close="true"
+>
+  <ValidationObserver ref="observer" tag="form" v-slot="{valid,changed}">
+    <el-form
+      :model="ruleForm"
+      ref="ruleForm"
+      label-width="100px"
+      class="demo-ruleForm"
+    >
+      <template v-for="form in data">
+        <el-form-item :label="form.name" :required="form.required">
+          <component
+            :is="form.type"
+            :title="form.name"
+            :styles="form.width"
+            :rules="form.rules===undefined?'':form.rules"
+            :value.sync="ruleForm[form.prop]"
+            :max="form.max"
+            :options="form.options"
+            :src="ruleForm[form.prop]"
+          />
+        </el-form-item>
+      </template>
+      <SubmitButton :changed="changed" :valid="valid"
+      @submit="submit":submitButton="submitButton" />
+    </el-form>
+  </ValidationObserver>
+</el-dialog>

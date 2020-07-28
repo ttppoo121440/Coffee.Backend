@@ -1,0 +1,5 @@
+@mixin bg-emphasis-variant($parent, $color) {
+  #{$parent} {
+    background-color: $color !important;
+  }
+}

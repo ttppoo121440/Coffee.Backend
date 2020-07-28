@@ -1,0 +1,86 @@
+<div class="h-100">
+  <CheckBoxGroup :value.sync="checkboxVal" :data="columnsData"></CheckBoxGroup>
+  <el-table
+    default-expand-all
+    :tree-props="{children: 'children'}"
+    row-key="id"
+    :key="key"
+    v-loading="$store.state.Loading.loading"
+    highlight-current-row
+    ref="multipleTable"
+    :data="formatData"
+    border
+    style="width: 100%;"
+    @selection-change="changeFun"
+  >
+    <template v-for="column in formThead">
+      <el-table-column
+        v-if="column.type"
+        :type="column.type"
+        :key="column.desc"
+        align="center"
+        :label="column.name"
+        :width="column.width===undefined?'auto':column.width"
+        :sortable="column.sortable?true:false"
+        :fixed="column.fixed"
+      >
+      </el-table-column>
+      <el-table-column
+        :prop="column.desc"
+        v-if="!column.type"
+        :key="column.desc"
+        :label="column.name"
+        :width="column.width===undefined?'auto':column.width"
+        :sortable="column.sortable?true:false"
+        :fixed="column.fixed"
+        :show-overflow-tooltip="column.tooltip?true:false"
+      >
+        <template slot-scope="scope">
+          <div v-if="column.btns" :style="'text-align:center;'+column.style">
+            <el-button
+              v-for="(btn ,index) in column.btns"
+              size="mini"
+              :class="btn.btnClass"
+              :key="index"
+              :type="btn.btnType"
+              @click="handleBtnClick(btn.method, scope.row)"
+              >{{ btn.name }}
+            </el-button>
+          </div>
+          <div
+            v-else-if="column.img"
+            :style="'text-align:center;'+column.style"
+          >
+            <el-image
+              style="width: 100px; height: 100px"
+              :src="scope.row[column.desc]"
+              fit="fill"
+            ></el-image>
+          </div>
+          <div
+            v-else
+            :style="column.style"
+            :class="column.tooltip?'btable-tooltip':''"
+          >
+            <template>
+              <span
+                v-if="column.formatter"
+                v-html="column.formatter(scope.row[column.desc], column)"
+              ></span>
+              <span v-else>{{ scope.row[column.desc] }}</span>
+            </template>
+          </div>
+        </template>
+      </el-table-column>
+    </template>
+  </el-table>
+  <Pagination
+    :showPage="showPage"
+    :current="current"
+    :pageSizes="pageSizes"
+    :pageSize="pageSize"
+    :total="total"
+    @handleSizeChange="handleSizeChange"
+    @handleCurrentChange="handleCurrentChange"
+  ></Pagination>
+</div>

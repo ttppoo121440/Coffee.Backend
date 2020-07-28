@@ -1,0 +1,10 @@
+.error > input,
+.error > input:hover,
+.error > input:focus {
+  border-color: #f56c6c;
+}
+.el-select-group__title {
+  font-size: 18px;
+  color: #17a2b8;
+  margin-bottom: 10px;
+}

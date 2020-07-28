@@ -1,0 +1,20 @@
+{
+  //自動格式化
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave":{
+    "source.fixAll": true
+  },
+  // 自動修正錯誤
+  "eslint.autoFixOnSave": true,
+  // 提示錯誤訊息
+  "eslint.alwaysShowStatus": true,
+  // 偵測的檔案
+  "eslint.options": {
+    "extensions":[".html",".js",".vue"]
+  },
+  "eslint.validate": [
+    {"language": "html","autoFix": true},
+    {"language": "javascript","autoFix": true},
+    {"language": "vue","autoFix": true},
+  ]
+}
