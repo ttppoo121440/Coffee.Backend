@@ -7,8 +7,10 @@
   >
     <el-input
       v-model="bindingValue"
+      show-word-limit
       :clearable="true"
       :class="{'error':errors[0]}"
+      :maxlength="max"
     />
     <span class="text-danger">{{ errors[0] }}</span>
   </ValidationProvider>
@@ -33,6 +35,10 @@ export default {
     value: {
       type: String,
       default: '',
+    },
+    max: {
+      type: Number,
+      default: 10,
     },
   },
   computed: {

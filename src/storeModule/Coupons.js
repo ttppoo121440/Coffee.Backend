@@ -94,6 +94,7 @@ export default {
         prop: 'percent',
         rules: 'required|integer',
         required: true,
+        max: 2,
       },
       {
         name: '到期日',
@@ -121,6 +122,7 @@ export default {
         commit('Pagination/SET_TOTAL', res.meta.pagination.total, {
           root: true,
         });
+        console.log(res);
         commit('Pagination/SET_TOTAL_PAGES', res.meta.pagination.total_pages, {
           root: true,
         });

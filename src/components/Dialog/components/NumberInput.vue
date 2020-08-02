@@ -38,7 +38,7 @@ export default {
     },
     max: {
       type: Number,
-      default: 20,
+      default: 10,
     },
   },
   computed: {
