@@ -13,18 +13,17 @@ export default {
         /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
         '$1',
       );
-      return checkLogin(cookieToken).then((res) => {
+      return checkLogin(cookieToken).then(() => {
         commit('Loading/LOADING', false, {
           root: true,
         });
-        return res.success;
       }).catch((error) => {
         if (error === 422) {
           commit('Loading/LOADING', false, {
             root: true,
           });
+          router.push('/login');
         }
-        return error;
       });
     },
     async Login({ commit }, from) {
@@ -60,11 +59,13 @@ export default {
         });
         notify('提示', '登出成功', 'success');
         document.cookie = 'token=;expires=;';
+        router.push('/login');
       }).catch((error) => {
         if (error === 422) {
           commit('Loading/LOADING', false, {
             root: true,
           });
+          router.push('/login');
         }
       });
     },

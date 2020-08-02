@@ -9,11 +9,8 @@
 
 export default {
   name: 'Home',
-  async mounted() {
-    const login = await this.$store.dispatch('Login/CheckLogin');
-    if (login === 422) {
-      this.$router.push('/login');
-    }
+  mounted() {
+    this.$store.dispatch('Login/CheckLogin');
   },
 };
 </script>

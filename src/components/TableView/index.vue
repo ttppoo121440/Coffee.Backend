@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     columnsData() {
-      return this.columns.map((item) => (item.name !== '全選' ? item : false));
+      return this.columns.filter((item) => (item.name !== '全選' ? item : false));
     },
   },
   watch: {
@@ -68,7 +68,6 @@ export default {
         this.multipleSelection = val;
         this.$emit('row-selection', this.multipleSelection);
       } else {
-        console.log(this.isUpdateSelection);
         this.isUpdateSelection = true;
       }
     },

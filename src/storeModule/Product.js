@@ -13,7 +13,7 @@ export default {
     // table 資料
     columns: Object.freeze([
       {
-        name: '全部',
+        name: '全選',
         type: 'selection',
       },
       {
@@ -192,7 +192,6 @@ export default {
         commit('Pagination/SET_TOTAL', res.meta.pagination.total, {
           root: true,
         });
-        console.log(res);
         commit('Pagination/SET_TOTAL_PAGES', res.meta.pagination.total_pages, {
           root: true,
         });
@@ -211,7 +210,6 @@ export default {
       });
       await getSingleProduct(id).then((res) => {
         // 資料轉換層
-        console.log(res.data);
         const Adapter = new SingleProductData(res.data);
         commit('SET_FORM_DATA', Adapter.transform());
         commit('Loading/LOADING', false, {

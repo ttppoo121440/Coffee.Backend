@@ -5,8 +5,16 @@
 </template>
 
 <script>
+import Login from '@/storeModule/Login';
+
 export default {
   name: 'App',
+  mounted() {
+    this.$registerModule(this.$store, { Login });
+  },
+  beforeDestroy() {
+    this.$unregisterModule(this.$store, ['Login']);
+  },
 };
 </script>
 

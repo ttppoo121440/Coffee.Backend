@@ -14,7 +14,7 @@ export default {
     // table 資料
     columns: Object.freeze([
       {
-        name: '全部',
+        name: '全選',
         type: 'selection',
       },
       {
@@ -122,7 +122,6 @@ export default {
         commit('Pagination/SET_TOTAL', res.meta.pagination.total, {
           root: true,
         });
-        console.log(res);
         commit('Pagination/SET_TOTAL_PAGES', res.meta.pagination.total_pages, {
           root: true,
         });

@@ -7,7 +7,7 @@ export default {
     // table 資料
     columns: Object.freeze([
       {
-        name: '全部',
+        name: '全選',
         type: 'selection',
       },
       {

@@ -33,6 +33,7 @@
               <el-button
                 type="primary"
                 class="mr-3"
+                :disabled="$store.state.Loading.loading"
                 @click="logout"
               >
                 登出
@@ -105,7 +106,7 @@ export default {
       this.isCollapse = !this.isCollapse;
     },
     logout() {
-      this.$store.dispatch('Login/Logout').then(() => this.$router.push('/login')).catch(() => this.$router.push('/login'));
+      this.$store.dispatch('Login/Logout');
     },
   },
 };

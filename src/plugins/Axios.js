@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { notify } from '@/plugins/ElementUI';
 import router from '@/router';
-
-const store = require('@/store');
+import store from '@/store';
 
 // Axios 初始設定
 
@@ -28,14 +27,14 @@ Request.interceptors.request.use(
 
 const httpCode = {
   401: () => {
-    notify('提示', '請重新登入', 'info');
+    notify('提示', '請重新登入', 'warning');
     router.push('/login');
   },
   404: () => {
     notify('提示', '請求不存在', 'error');
   },
   422: () => {
-    notify('提示', '請填寫正確欄位', 'error');
+    notify('提示', '請重新登入', 'warning');
   },
   500: () => {
     notify('錯誤提示', '伺服器出錯', 'error');
@@ -67,7 +66,7 @@ function axiosMethod(method, url, data = {}) {
           reject(notify('錯誤', 'Error', 'error'));
         }
       }).catch((error) => {
-        store.default.commit('Loading/LOADING', false);
+        store.commit('Loading/LOADING', false);
         reject(error.response.status);
       });
   });
