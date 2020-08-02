@@ -1,4 +1,4 @@
-import Vue from "vue";
+import Vue from 'vue';
 // this.$registerModule(store,{moduleName:module})
 Vue.prototype.$registerModule = (store, modules) => {
   Object.keys(modules).forEach((name) => {

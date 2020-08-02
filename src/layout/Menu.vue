@@ -22,7 +22,9 @@
         <el-menu-item-group>
           <el-menu-item
             v-for="item in menu.titleItem"
+
             :key="item.id"
+            :disabled="$store.state.Loading.loading"
             :index="item.router"
           >
             <v-icon
@@ -38,6 +40,7 @@
       <el-menu-item
         v-else
         :key="menu.id"
+        :disabled="$store.state.Loading.loading"
         :index="menu.router"
       >
         <v-icon
@@ -53,7 +56,7 @@
 
 <script>
 export default {
-  name: "Menu",
+  name: 'Menu',
   props: {
     isCollapse: {
       type: Boolean,

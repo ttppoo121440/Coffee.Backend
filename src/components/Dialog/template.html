@@ -8,27 +8,30 @@
 >
   <ValidationObserver ref="observer" tag="form" v-slot="{valid,changed}">
     <el-form
-      :model="ruleForm"
+      :model="formData"
       ref="ruleForm"
       label-width="100px"
       class="demo-ruleForm"
     >
-      <template v-for="form in data">
+      <template v-for="form in ruleForm">
         <el-form-item :label="form.name" :required="form.required">
           <component
             :is="form.type"
             :title="form.name"
             :styles="form.width"
             :rules="form.rules===undefined?'':form.rules"
-            :value.sync="ruleForm[form.prop]"
+            :value.sync="formData[form.prop]"
             :max="form.max"
             :options="form.options"
-            :src="ruleForm[form.prop]"
+            :src="formData[form.prop]"
+            :type="form.type"
+            :api="form.api"
+            @upload="upload"
           />
         </el-form-item>
       </template>
       <SubmitButton :changed="changed" :valid="valid"
-      @submit="submit":submitButton="submitButton" />
+      @submit="submit" />
     </el-form>
   </ValidationObserver>
 </el-dialog>

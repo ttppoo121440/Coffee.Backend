@@ -1,24 +1,45 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "@/views/Home.vue";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Layout from '@/layout';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home,
+    path: '/login',
+    name: 'Login',
+    component: () => import(/* webpackChunkName: "login" */ '@/views/Login'),
   },
   {
-    path: "/about",
-    name: "About",
-    component: () => import(/* webpackChunkName: "about" */ "../views/About"),
-  },
-  {
-    path: "/demo",
-    name: "Demo",
-    component: () => import(/* webpackChunkName: "Demo" */ "../views/Demo"),
+    path: '/',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Home',
+        component: () => import(/* webpackChunkName: "Home" */ '@/views/Home'),
+      },
+      {
+        path: '/products',
+        name: 'Products',
+        component: () => import(/* webpackChunkName: "Products" */ '@/views/Products'),
+      },
+      {
+        path: '/picture',
+        name: 'Picture',
+        component: () => import(/* webpackChunkName: "Picture" */ '@/views/Picture'),
+      },
+      {
+        path: '/coupons',
+        name: 'Coupons',
+        component: () => import(/* webpackChunkName: "Coupons" */ '@/views/Coupons'),
+      },
+      {
+        path: '/order',
+        name: 'Order',
+        component: () => import(/* webpackChunkName: "Order" */ '@/views/Order'),
+      },
+    ],
   },
 ];
 

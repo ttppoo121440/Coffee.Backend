@@ -1,15 +1,17 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import Loading from "./Loading";
-import Demo from "./Demo";
-import Dialog from "./Dialog";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import Loading from './Modules/Loading';
+import Pagination from './Modules/Pagination';
+import Dialog from './Modules/Dialog';
+import Login from './Modules/Login';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
     Loading,
-    Demo,
     Dialog,
+    Login,
+    Pagination,
   },
 });

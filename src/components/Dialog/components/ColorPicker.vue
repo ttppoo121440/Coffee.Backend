@@ -5,13 +5,9 @@
     :style="{width: styles}"
     :rules="rules"
   >
-    <el-date-picker
+    <el-color-picker
       v-model="bindingValue"
-      type="date"
-      value-format="yyyy-MM-dd"
-      :default-value="nowDate"
       :class="{'error':errors[0]}"
-      placeholder="選擇日期"
     />
     <span class="text-danger">{{ errors[0] }}</span>
   </ValidationProvider>
@@ -19,7 +15,7 @@
 
 <script>
 export default {
-  name: "Date",
+  name: 'ColorPicker',
   props: {
     title: {
       type: String,
@@ -27,21 +23,16 @@ export default {
     },
     styles: {
       type: String,
-      default: "",
+      default: '',
     },
     rules: {
       type: String,
-      default: "",
+      default: '',
     },
     value: {
       type: String,
-      default: "",
+      default: '',
     },
-  },
-  data() {
-    return {
-      nowDate: this.$moment().format("YYYY-MM-DD"),
-    };
   },
   computed: {
     bindingValue: {
@@ -49,21 +40,9 @@ export default {
         return this.value;
       },
       set(value) {
-        this.$emit("update:value", value);
+        this.$emit('update:value', value);
       },
     },
-    timeDefault() {
-      const now = this.$moment().format("YYYY-MM-DD");
-      return now;
-    },
-  },
-  mounted() {
-    if (this.value === "") {
-      this.bindingValue = this.timeDefault;
-    }
   },
 };
 </script>
-
-<style>
-</style>

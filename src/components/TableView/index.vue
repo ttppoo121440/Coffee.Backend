@@ -1,16 +1,16 @@
 <script>
-import CheckBoxGroup from "./CheckBoxGroup";
-import Pagination from "./Pagination";
+import CheckBoxGroup from './CheckBoxGroup';
+import Pagination from './Pagination';
 
 export default {
-  name: "TableView",
+  name: 'TableView',
   components: {
     CheckBoxGroup,
     Pagination,
   },
   props: {
     data: {
-      type: [Array, Object],
+      type: Array,
       required: true,
     },
     showPage: {
@@ -23,48 +23,15 @@ export default {
   data() {
     return {
       key: 1,
-      currentPage: 1, // 當前頁
-      pageSize: 10, // 每頁顯示的條數
       multipleSelection: [], // 已選中的行
       isUpdateSelection: true, // 是否更新已選中
-      pageSizes: [10, 25, 50, 100],
-      tableRowWarning: "",
-      tableRowSuccess: "",
       checkboxVal: [],
       formThead: [],
     };
   },
   computed: {
-    formatData() {
-      // 分頁後data
-      const startNum = (this.currentPage - 1) * this.pageSize;
-      const endNum = startNum + this.pageSize;
-
-      return this.data.slice(startNum, endNum);
-    },
-    current: {
-      get() {
-        return this.currentPage;
-      },
-      set() {
-        if (this.currentPage < 1) {
-          this.currentPage = 1;
-        } if (Math.ceil(this.total / this.pageSize) < this.currentPage) {
-          this.currentPage = Math.ceil(this.total / this.pageSize);
-        }
-      },
-
-    },
     columnsData() {
-      return this.columns.filter((item) => {
-        if (item.name !== "全選") {
-          return item;
-        }
-        return false;
-      });
-    },
-    total() {
-      return this.data.length;
+      return this.columns.map((item) => (item.name !== '全選' ? item : false));
     },
   },
   watch: {
@@ -99,22 +66,24 @@ export default {
       this.$parent.isDisableBtn = val.length;
       if (this.isUpdateSelection) {
         this.multipleSelection = val;
+        this.$emit('row-selection', this.multipleSelection);
       } else {
         console.log(this.isUpdateSelection);
         this.isUpdateSelection = true;
       }
     },
-    handleSizeChange(pagesize) {
+    handleSizeChange(totalPages) {
       // 每頁條數改變時觸發
       this.isUpdateSelection = false; // 不更新選中行
-      this.pageSize = pagesize;
+      this.totalPages = totalPages;
       this.updateSeletion();
+      this.$emit('handleSizeChange', totalPages);
     },
     handleCurrentChange(cur) {
       // 當前頁改變時觸發
       this.isUpdateSelection = false; // 不更新選中行
-      this.currentPage = cur;
       this.updateSeletion();
+      this.$emit('handleCurrentChange', cur);
     },
     updateSeletion() {
       this.$nextTick(() => {
@@ -127,8 +96,11 @@ export default {
         this.isUpdateSelection = true; // 更新選中行
       });
     },
-    handleBtnClick(method, row) {
-      this.$emit("handleBtnClick", { method, row });
+    btnHandle(method, row) {
+      this.$emit('btnHandle', { method, row });
+    },
+    switchHandle(data, row) {
+      this.$emit('switchHandle', data, row);
     },
   },
 };

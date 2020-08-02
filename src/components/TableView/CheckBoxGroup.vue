@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: "CheckBoxGroup",
+  name: 'CheckBoxGroup',
   props: {
     value: {
       type: Array,
@@ -32,7 +32,7 @@ export default {
         return this.value;
       },
       set(value) {
-        this.$emit("update:value", value);
+        this.$emit('update:value', value);
       },
     },
   },

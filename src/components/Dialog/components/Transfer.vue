@@ -5,10 +5,12 @@
     :style="{width: styles}"
     :rules="rules"
   >
-    <el-input
+    <el-transfer
       v-model="bindingValue"
-      :clearable="true"
-      :class="{'error':errors[0]}"
+      filterable
+      filter-placeholder="請輸入關鍵字"
+      :titles="['選擇資料', '確定資料']"
+      :data="options"
     />
     <span class="text-danger">{{ errors[0] }}</span>
   </ValidationProvider>
@@ -16,7 +18,7 @@
 
 <script>
 export default {
-  name: "Input",
+  name: 'Validation',
   props: {
     title: {
       type: String,
@@ -24,15 +26,20 @@ export default {
     },
     styles: {
       type: String,
-      default: "",
+      default: '',
     },
     rules: {
       type: String,
-      default: "",
+      default: '',
     },
     value: {
-      type: String,
-      default: "",
+      type: Array,
+      default: () => [],
+      required: true,
+    },
+    options: {
+      type: Array,
+      required: true,
     },
   },
   computed: {
@@ -41,9 +48,12 @@ export default {
         return this.value;
       },
       set(value) {
-        this.$emit("update:value", value);
+        this.$emit('update:value', value);
       },
     },
   },
 };
 </script>
+
+<style>
+</style>

@@ -5,23 +5,17 @@
     :style="{width: styles}"
     :rules="rules"
   >
-    <template v-for="item in options">
-      <el-radio
-        :key="item.value"
-        v-model="bindingValue"
-        :style="{width: styles}"
-        :label="item.value"
-      >
-        {{ item.label }}
-      </el-radio>
-    </template>
+    <el-checkbox
+      v-model="bindingValue"
+      :class="{'error':errors[0]}"
+    />
     <span class="text-danger">{{ errors[0] }}</span>
   </ValidationProvider>
 </template>
 
 <script>
 export default {
-  name: "Radio",
+  name: 'CheckBox',
   props: {
     title: {
       type: String,
@@ -29,18 +23,14 @@ export default {
     },
     styles: {
       type: String,
-      default: "",
+      default: '',
     },
     rules: {
       type: String,
-      required: true,
+      default: '',
     },
     value: {
-      type: String,
-      required: true,
-    },
-    options: {
-      type: Array,
+      type: Boolean,
       required: true,
     },
   },
@@ -50,12 +40,9 @@ export default {
         return this.value;
       },
       set(value) {
-        this.$emit("update:value", value);
+        this.$emit('update:value', value);
       },
     },
   },
 };
 </script>
-
-<style>
-</style>

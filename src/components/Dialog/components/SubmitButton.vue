@@ -1,24 +1,21 @@
 <template>
   <div style="display: inline-block">
-    <el-form-item
-      v-for="item in submitButton"
-      :key="item.name"
-    >
+    <el-form-item>
       <el-button
         v-if="$store.state.Dialog.dialogIsEdit"
-        :disabled="!changed || !valid"
+        :disabled="!changed || $store.state.Loading.loading"
         type="primary"
         @click="submit"
       >
-        {{ item.name }}
+        提交
       </el-button>
       <el-button
         v-else
-        :disabled="!valid"
+        :disabled="!valid || $store.state.Loading.loading"
         type="primary"
         @click="submit"
       >
-        {{ item.name }}
+        提交
       </el-button>
     </el-form-item>
   </div>
@@ -26,12 +23,8 @@
 
 <script>
 export default {
-  name: "SubmitButton",
+  name: 'SubmitButton',
   props: {
-    submitButton: {
-      type: Array,
-      required: true,
-    },
     valid: {
       type: Boolean,
       default: false,
@@ -43,7 +36,7 @@ export default {
   },
   methods: {
     submit(value) {
-      this.$emit("submit", value);
+      this.$emit('submit', value);
     },
   },
 };

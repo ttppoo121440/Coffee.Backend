@@ -33,6 +33,7 @@
               <el-button
                 type="primary"
                 class="mr-3"
+                @click="logout"
               >
                 登出
               </el-button>
@@ -47,9 +48,9 @@
 </template>
 
 <script>
-import ThemePicker from "@/components/ThemePicker/index";
-import Menu from "./Menu";
-import Main from "./Main";
+import ThemePicker from '@/components/ThemePicker/index';
+import Menu from './Menu';
+import Main from './Main';
 
 export default {
   components: {
@@ -62,24 +63,34 @@ export default {
       isCollapse: false,
       subMenu: [
         {
-          id: "1",
-          title: "首頁管理",
-          icon: "th-large",
-          titleItem: [
-            { title: "Home", icon: "th-large", router: "/" },
-          ],
+          id: 0,
+          title: '首頁',
+          router: '/',
+          icon: 'home',
+        },
+        {
+          id: 1,
+          title: '產品列表',
+          router: '/products',
+          icon: 'box-open',
+        },
+        {
+          id: 2,
+          title: '優惠卷列表',
+          router: '/Coupons',
+          icon: 'percent',
         },
         {
           id: 3,
-          title: "About",
-          router: "/about",
-          icon: "file-word",
+          title: '訂單列表',
+          router: '/order',
+          icon: 'file-alt',
         },
         {
           id: 4,
-          title: "Demo",
-          router: "/demo",
-          icon: "bars",
+          title: '圖片儲存列表',
+          router: '/picture',
+          icon: 'images',
         },
       ],
     };
@@ -92,6 +103,9 @@ export default {
   methods: {
     active() {
       this.isCollapse = !this.isCollapse;
+    },
+    logout() {
+      this.$store.dispatch('Login/Logout').then(() => this.$router.push('/login')).catch(() => this.$router.push('/login'));
     },
   },
 };

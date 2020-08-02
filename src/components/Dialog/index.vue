@@ -1,14 +1,18 @@
 <script>
-import { messageBox } from "@/plugins/ElementUI";
-import Input from "./Input";
-import NumberInput from "./NumberInput";
-import Select from "./Select";
-import Radio from "./Radio";
-import SubmitButton from "./SubmitButton";
-import Date from "./Date";
-import Transfer from "./Transfer";
-import ColorPicker from "./ColorPicker";
-import Pic from "./Pic";
+import { messageBox } from '@/plugins/ElementUI';
+import Input from './components/Input';
+import TextArea from './components/TextArea';
+import CheckBox from './components/CheckBox';
+import SwitchBox from './components/SwitchBox';
+import NumberInput from './components/NumberInput';
+import Select from './components/Select';
+import Upload from './components/Upload';
+import Radio from './components/Radio';
+import SubmitButton from './components/SubmitButton';
+import Date from './components/Date';
+import Transfer from './components/Transfer';
+import ColorPicker from './components/ColorPicker';
+import Pic from './components/Pic';
 
 export default {
   components: {
@@ -21,6 +25,10 @@ export default {
     ColorPicker,
     SubmitButton,
     Pic,
+    TextArea,
+    CheckBox,
+    SwitchBox,
+    Upload,
   },
   props: {
     visible: {
@@ -28,24 +36,19 @@ export default {
       default: false,
     },
     ruleForm: {
-      type: Object,
+      type: [Array, Object],
       required: true,
     },
     rules: {
       type: String,
-      default: "",
+      default: '',
     },
-    data: { type: [Array, Object], default: () => [] },
-    tree: { type: [Array, Object], default: () => [] },
-    submitButton: {
-      type: Array,
-      required: true,
-    },
+    formData: { type: Object, default: () => [] },
     title: {
       type: String,
       required: true,
     },
-    dialogWidth: { type: String, default: "50%" },
+    dialogWidth: { type: String, default: '50%' },
   },
   data() {
     return {
@@ -58,19 +61,22 @@ export default {
         return this.visible;
       },
       set() {
-        this.$emit("update:visible", false);
+        this.$emit('update:visible', false);
       },
     },
   },
   methods: {
+    upload(data) {
+      this.$emit('upload', data);
+    },
     async submit() {
       const isValid = await this.$refs.observer.validate();
-      this.$emit("submit", isValid);
+      this.$emit('submit', isValid, this.$store.state.Dialog.dialogIsEdit === true ? 'edit' : 'add');
     },
     dialogClose(done) {
-      messageBox("確認關閉？").then(() => {
+      messageBox('確認關閉？').then(() => {
         done();
-        this.$emit("dialogCloseHandler", done);
+        this.$emit('dialogCloseHandler', done);
       });
     },
   },

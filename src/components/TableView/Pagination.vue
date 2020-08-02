@@ -15,40 +15,37 @@
 
 <script>
 export default {
-  name: "Pagination",
+  name: 'Pagination',
   props: {
     showPage: {
       type: Boolean,
       default: true,
     },
-    current: {
-      type: Number,
-      required: true,
+  },
+  data() {
+    return {
+      pageSizes: [10, 25, 50, 100],
+      current: 1,
+    };
+  },
+  computed: {
+    totalPages() {
+      return this.$store.state.Pagination.total_pages;
     },
-    pageSizes: {
-      type: Array,
-      required: true,
+    total() {
+      return this.$store.state.Pagination.total;
     },
-    pageSize: {
-      type: Number,
-      required: true,
-    },
-    total: {
-      type: Number,
-      required: true,
+    pageSize() {
+      return this.$store.state.Pagination.paged;
     },
   },
   methods: {
     handleSizeChange(value) {
-      this.$emit("handleSizeChange", value);
+      this.$emit('handleSizeChange', value);
     },
     handleCurrentChange(value) {
-      this.$emit("handleCurrentChange", value);
+      this.$emit('handleCurrentChange', value);
     },
   },
 };
 </script>
-
-<style>
-
-</style>

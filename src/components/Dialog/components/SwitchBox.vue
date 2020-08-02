@@ -5,12 +5,10 @@
     :style="{width: styles}"
     :rules="rules"
   >
-    <el-input
-      v-model.number="bindingValue"
-      :clearable="true"
-      show-word-limit
-      :maxlength="max"
-      :class="{'error':errors[0]}"
+    <el-switch
+      v-model="bindingValue"
+      active-color="#13ce66"
+      inactive-color="#ff4949"
     />
     <span class="text-danger">{{ errors[0] }}</span>
   </ValidationProvider>
@@ -18,7 +16,7 @@
 
 <script>
 export default {
-  name: "NumberInput",
+  name: 'SwitchBox',
   props: {
     title: {
       type: String,
@@ -26,18 +24,14 @@ export default {
     },
     styles: {
       type: String,
-      default: "",
+      default: '',
     },
     rules: {
       type: String,
-      required: true,
+      default: '',
     },
     value: {
-      type: [Number, String],
-      required: true,
-    },
-    max: {
-      type: Number,
+      type: Boolean,
       required: true,
     },
   },
@@ -47,12 +41,9 @@ export default {
         return this.value;
       },
       set(value) {
-        this.$emit("update:value", value);
+        this.$emit('update:value', value);
       },
     },
   },
 };
 </script>
-
-<style>
-</style>

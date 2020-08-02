@@ -5,17 +5,23 @@
     :style="{width: styles}"
     :rules="rules"
   >
-    <el-color-picker
-      v-model="bindingValue"
-      :class="{'error':errors[0]}"
-    />
+    <template v-for="item in options">
+      <el-radio
+        :key="item.value"
+        v-model="bindingValue"
+        :style="{width: styles}"
+        :label="item.value"
+      >
+        {{ item.label }}
+      </el-radio>
+    </template>
     <span class="text-danger">{{ errors[0] }}</span>
   </ValidationProvider>
 </template>
 
 <script>
 export default {
-  name: "ColorPicker",
+  name: 'Radio',
   props: {
     title: {
       type: String,
@@ -23,15 +29,19 @@ export default {
     },
     styles: {
       type: String,
-      default: "",
+      default: '',
     },
     rules: {
       type: String,
-      default: "",
+      required: true,
     },
     value: {
       type: String,
-      default: "",
+      required: true,
+    },
+    options: {
+      type: Array,
+      required: true,
     },
   },
   computed: {
@@ -40,9 +50,12 @@ export default {
         return this.value;
       },
       set(value) {
-        this.$emit("update:value", value);
+        this.$emit('update:value', value);
       },
     },
   },
 };
 </script>
+
+<style>
+</style>
