@@ -114,11 +114,11 @@ export default {
   }),
   actions: {
     // 取得 優惠卷資料
-    async getCoupon({ commit, rootState }) {
+    getCoupon({ commit, rootState }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await getCoupon(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`).then((res) => {
+      return getCoupon(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`).then((res) => {
         commit('Pagination/SET_TOTAL', res.meta.pagination.total, {
           root: true,
         });
@@ -134,11 +134,11 @@ export default {
       });
     },
     // 取得 單一優惠卷資料
-    async getSingleCoupon({ commit }, id) {
+    getSingleCoupon({ commit }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await getSingleCoupon(id).then((res) => {
+      return getSingleCoupon(id).then((res) => {
         // 資料轉換層
         const Adapter = new CouponForm(res.data);
         commit('SET_FORM_DATA', Adapter.transform());
@@ -148,11 +148,11 @@ export default {
       });
     },
     // 新增 優惠卷
-    async createCoupon({ state, commit, dispatch }) {
+    createCoupon({ state, commit, dispatch }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await createCoupon(state.formData).then(() => {
+      return createCoupon(state.formData).then(() => {
         commit('Loading/LOADING', false, {
           root: true,
         });
@@ -164,11 +164,11 @@ export default {
       });
     },
     // 修改 優惠卷資料
-    async editCoupon({ state, dispatch, commit }) {
+    editCoupon({ state, dispatch, commit }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await editCoupon(state.formData.id, state.formData).then(() => {
+      return editCoupon(state.formData.id, state.formData).then(() => {
         commit('Loading/LOADING', false, {
           root: true,
         });
@@ -180,11 +180,11 @@ export default {
       });
     },
     // 刪除 優惠卷資料
-    async deleteCoupon({ commit, dispatch }, id) {
+    deleteCoupon({ commit, dispatch }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await deleteCoupon(id).then(() => {
+      return deleteCoupon(id).then(() => {
         notify('訊息', '删除成功', 'success');
         commit('Loading/LOADING', false, {
           root: true,
@@ -227,7 +227,7 @@ export default {
         title: '',
         code: '',
         percent: 0,
-        deadline_at: '',
+        deadline_at: moment().format('YYYY-MM-DD HH:mm:ss'),
         enabled: false,
       };
     },

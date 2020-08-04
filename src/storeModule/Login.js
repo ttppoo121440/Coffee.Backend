@@ -26,11 +26,11 @@ export default {
         }
       });
     },
-    async Login({ commit }, from) {
+    Login({ commit }, from) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await login(from).then((res) => {
+      login(from).then((res) => {
         const { token } = res;
         const { expired } = res;
         document.cookie = `token=${token};expires=${new Date(
@@ -45,7 +45,7 @@ export default {
         notify('提示', '登入失敗', 'error');
       });
     },
-    async Logout({ commit }) {
+    Logout({ commit }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
@@ -53,7 +53,7 @@ export default {
         /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
         '$1',
       );
-      await logout(cookieToken).then(() => {
+      logout(cookieToken).then(() => {
         commit('Loading/LOADING', false, {
           root: true,
         });

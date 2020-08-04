@@ -172,23 +172,23 @@ export default {
   }),
   actions: {
     // 上傳 圖片資料
-    async uploadPic({ commit }, data) {
+    uploadPic({ commit }, data) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await uploadPic(data).then((res) => {
+      return uploadPic(data).then((res) => {
         commit('SET_PIC', res.data.path);
-      });
-      commit('Loading/LOADING', false, {
-        root: true,
+        commit('Loading/LOADING', false, {
+          root: true,
+        });
       });
     },
     // 取得 產品資料
-    async getProduct({ commit, rootState }) {
+    getProduct({ commit, rootState }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await getProduct(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`).then((res) => {
+      getProduct(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`).then((res) => {
         commit('Pagination/SET_TOTAL', res.meta.pagination.total, {
           root: true,
         });
@@ -204,11 +204,11 @@ export default {
       });
     },
     // 取得 單一產品資料
-    async getSingleProduct({ commit }, id) {
+    getSingleProduct({ commit }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await getSingleProduct(id).then((res) => {
+      return getSingleProduct(id).then((res) => {
         // 資料轉換層
         const Adapter = new SingleProductData(res.data);
         commit('SET_FORM_DATA', Adapter.transform());
@@ -218,13 +218,13 @@ export default {
       });
     },
     // 新增 產品
-    async createProduct({ commit, dispatch, state }) {
+    createProduct({ commit, dispatch, state }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
       // 資料轉換層
       const Adapter = new ProductForm(state.formData);
-      await createProduct(Adapter.transform()).then(() => {
+      createProduct(Adapter.transform()).then(() => {
         commit('Loading/LOADING', false, {
           root: true,
         });
@@ -236,13 +236,13 @@ export default {
       });
     },
     // 修改 產品資料
-    async editProduct({ state, dispatch, commit }) {
+    editProduct({ state, dispatch, commit }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
       // 資料轉換層
       const Adapter = new ProductForm(state.formData);
-      await editProduct(state.formData.id, Adapter.transform()).then(() => {
+      editProduct(state.formData.id, Adapter.transform()).then(() => {
         commit('Loading/LOADING', false, {
           root: true,
         });
@@ -254,11 +254,11 @@ export default {
       });
     },
     // 刪除 產品資料
-    async deleteProduct({ commit, dispatch }, id) {
+    deleteProduct({ commit, dispatch }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await deleteProduct(id).then(() => {
+      deleteProduct(id).then(() => {
         notify('訊息', '删除成功', 'success');
         commit('Loading/LOADING', false, {
           root: true,

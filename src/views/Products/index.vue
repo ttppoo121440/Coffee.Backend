@@ -93,9 +93,9 @@ export default {
         this.$store.dispatch('Product/deleteProduct', item.id);
       });
     },
-    async openDialog(type) {
+    openDialog(type) {
       this.$store.dispatch('Product/open', { type });
-      await this.$store.dispatch('Product/updateOpen', { type });
+      this.$store.dispatch('Product/updateOpen', { type });
       this.$store.dispatch('Product/deleteOpen', { type });
     },
     // Dialog 提交事件

@@ -87,9 +87,9 @@ export default {
         this.$store.dispatch('Coupons/deleteCoupon', item.id);
       });
     },
-    async openDialog(type) {
+    openDialog(type) {
       this.$store.dispatch('Coupons/open', { type });
-      await this.$store.dispatch('Coupons/updateOpen', { type });
+      this.$store.dispatch('Coupons/updateOpen', { type });
       this.$store.dispatch('Coupons/deleteOpen', { type });
     },
     // Dialog 提交事件

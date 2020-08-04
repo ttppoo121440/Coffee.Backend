@@ -75,7 +75,7 @@ export default {
         this.$store.dispatch('Picture/deletePic', item.id);
       });
     },
-    async openDialog(type) {
+    openDialog(type) {
       this.$store.dispatch('Picture/deleteOpen', { type });
     },
   },

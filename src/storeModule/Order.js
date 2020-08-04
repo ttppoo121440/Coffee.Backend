@@ -33,11 +33,11 @@ export default {
   }),
   actions: {
     // 取得 訂單資料
-    async getOrder({ commit, rootState }) {
+    getOrder({ commit, rootState }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await getOrder(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`).then((res) => {
+      getOrder(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`).then((res) => {
         commit('Pagination/SET_TOTAL', res.meta.pagination.total, {
           root: true,
         });
@@ -52,11 +52,11 @@ export default {
       });
     },
     // 訂單 設定指定訂單為已付款
-    async setOrderPaid({ commit }, id) {
+    setOrderPaid({ commit }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await setOrderPaid(id).then(() => {
+      setOrderPaid(id).then(() => {
         notify('訊息', '此訂單設定付款成功', 'success');
         commit('Loading/LOADING', false, {
           root: true,
@@ -64,11 +64,11 @@ export default {
       });
     },
     // 訂單 設定指定訂單為未付款
-    async setOrderUnpaid({ commit }, id) {
+    setOrderUnpaid({ commit }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await setOrderUnpaid(id).then(() => {
+      setOrderUnpaid(id).then(() => {
         notify('訊息', '此訂單設定未付款成功', 'success');
         commit('Loading/LOADING', false, {
           root: true,

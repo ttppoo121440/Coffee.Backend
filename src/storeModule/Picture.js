@@ -31,11 +31,11 @@ export default {
   }),
   actions: {
     // 取得 圖片資料
-    async picList({ commit, rootState }) {
+    picList({ commit, rootState }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await picList(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`).then((res) => {
+      picList(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`).then((res) => {
         commit('Pagination/SET_TOTAL', res.meta.pagination.total, {
           root: true,
         });
@@ -49,11 +49,11 @@ export default {
       });
     },
     // 刪除 圖片資料
-    async deletePic({ commit, dispatch }, id) {
+    deletePic({ commit, dispatch }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      await deletePic(id).then(() => {
+      deletePic(id).then(() => {
         notify('訊息', '删除成功', 'success');
         commit('Loading/LOADING', false, {
           root: true,

@@ -9,7 +9,7 @@
       v-model="bindingValue"
       type="date"
       value-format="yyyy-MM-dd HH:mm:ss"
-      :default-value="nowDate"
+      :default-value="bindingValue"
       :class="{'error':errors[0]}"
       placeholder="選擇日期"
     />
@@ -38,11 +38,6 @@ export default {
       default: '',
     },
   },
-  data() {
-    return {
-      nowDate: this.$moment().format('YYYY-MM-DD HH:mm:ss'),
-    };
-  },
   computed: {
     bindingValue: {
       get() {
@@ -52,15 +47,6 @@ export default {
         this.$emit('update:value', value);
       },
     },
-    timeDefault() {
-      const now = this.$moment().format('YYYY-MM-DD HH:mm:ss');
-      return now;
-    },
-  },
-  mounted() {
-    if (this.value === '') {
-      this.bindingValue = this.timeDefault;
-    }
   },
 };
 </script>
