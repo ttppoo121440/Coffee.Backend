@@ -114,83 +114,82 @@ export default {
   }),
   actions: {
     // 取得 優惠卷資料
-    getCoupon({ commit, rootState }) {
+    async getCoupon({ commit, rootState }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      return getCoupon(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`).then((res) => {
-        commit('Pagination/SET_TOTAL', res.meta.pagination.total, {
-          root: true,
-        });
-        commit('Pagination/SET_TOTAL_PAGES', res.meta.pagination.total_pages, {
-          root: true,
-        });
-        // 資料轉換層
-        const Adapter = new CouponList(res.data);
-        commit('GET_TABLE_DATA', Adapter.transform());
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
+      const result = await getCoupon(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`);
+      commit('Pagination/SET_TOTAL', result.meta.pagination.total, {
+        root: true,
       });
+      commit('Pagination/SET_TOTAL_PAGES', result.meta.pagination.total_pages, {
+        root: true,
+      });
+      // 資料轉換層
+      const Adapter = new CouponList(result.data);
+      commit('GET_TABLE_DATA', Adapter.transform());
+      commit('Loading/LOADING', false, {
+        root: true,
+      });
+      return result;
     },
     // 取得 單一優惠卷資料
-    getSingleCoupon({ commit }, id) {
+    async getSingleCoupon({ commit }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      return getSingleCoupon(id).then((res) => {
-        // 資料轉換層
-        const Adapter = new CouponForm(res.data);
-        commit('SET_FORM_DATA', Adapter.transform());
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
+      const result = await getSingleCoupon(id);
+      const Adapter = new CouponForm(result.data);
+      commit('SET_FORM_DATA', Adapter.transform());
+      commit('Loading/LOADING', false, {
+        root: true,
       });
+      return result;
     },
     // 新增 優惠卷
-    createCoupon({ state, commit, dispatch }) {
+    async createCoupon({ state, commit, dispatch }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      return createCoupon(state.formData).then(() => {
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
-        notify('訊息', '新增成功', 'success');
-        commit('Dialog/CLEAR_DIALOG', false, {
-          root: true,
-        });
-        dispatch('getCoupon');
+      const result = await createCoupon(state.formData);
+      commit('Loading/LOADING', false, {
+        root: true,
       });
+      notify('訊息', '新增成功', 'success');
+      commit('Dialog/CLEAR_DIALOG', false, {
+        root: true,
+      });
+      dispatch('getCoupon');
+      return result;
     },
     // 修改 優惠卷資料
-    editCoupon({ state, dispatch, commit }) {
+    async editCoupon({ state, dispatch, commit }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      return editCoupon(state.formData.id, state.formData).then(() => {
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
-        notify('訊息', '修改成功', 'success');
-        commit('Dialog/CLEAR_DIALOG', false, {
-          root: true,
-        });
-        dispatch('getCoupon');
+      const result = await editCoupon(state.formData.id, state.formData);
+      commit('Loading/LOADING', false, {
+        root: true,
       });
+      notify('訊息', '修改成功', 'success');
+      commit('Dialog/CLEAR_DIALOG', false, {
+        root: true,
+      });
+      dispatch('getCoupon');
+      return result;
     },
     // 刪除 優惠卷資料
-    deleteCoupon({ commit, dispatch }, id) {
+    async deleteCoupon({ commit, dispatch }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      return deleteCoupon(id).then(() => {
-        notify('訊息', '删除成功', 'success');
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
-        dispatch('getCoupon');
+      const result = await deleteCoupon(id);
+      notify('訊息', '删除成功', 'success');
+      commit('Loading/LOADING', false, {
+        root: true,
       });
+      dispatch('getCoupon');
+      return result;
     },
     open({ commit }, { type }) {
       if (type.method === 'add') {
@@ -208,13 +207,14 @@ export default {
         });
       }
     },
-    deleteOpen({ dispatch }, { type }) {
+    async deleteOpen({ dispatch }, { type }) {
       if (type.method === 'delete') {
-        messageBox().then(() => {
+        try {
+          await messageBox();
           dispatch('deleteCoupon', type.row.id);
-        }).catch(() => {
+        } catch (error) {
           notify('info', '已取消删除', 'info');
-        });
+        }
       }
     },
   },

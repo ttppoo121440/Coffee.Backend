@@ -172,99 +172,98 @@ export default {
   }),
   actions: {
     // 上傳 圖片資料
-    uploadPic({ commit }, data) {
+    async uploadPic({ commit }, data) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      return uploadPic(data).then((res) => {
-        commit('SET_PIC', res.data.path);
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
+      const result = await uploadPic(data);
+      commit('SET_PIC', result.data.path);
+      commit('Loading/LOADING', false, {
+        root: true,
       });
+      return result;
     },
     // 取得 產品資料
-    getProduct({ commit, rootState }) {
+    async getProduct({ commit, rootState }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      getProduct(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`).then((res) => {
-        commit('Pagination/SET_TOTAL', res.meta.pagination.total, {
-          root: true,
-        });
-        commit('Pagination/SET_TOTAL_PAGES', res.meta.pagination.total_pages, {
-          root: true,
-        });
-        // 資料轉換層
-        const Adapter = new ProductList(res.data);
-        commit('GET_TABLE_DATA', Adapter.transform());
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
+      const result = await getProduct(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`);
+      commit('Pagination/SET_TOTAL', result.meta.pagination.total, {
+        root: true,
       });
+      commit('Pagination/SET_TOTAL_PAGES', result.meta.pagination.total_pages, {
+        root: true,
+      });
+      // 資料轉換層
+      const Adapter = new ProductList(result.data);
+      commit('GET_TABLE_DATA', Adapter.transform());
+      commit('Loading/LOADING', false, {
+        root: true,
+      });
+      return result;
     },
     // 取得 單一產品資料
-    getSingleProduct({ commit }, id) {
+    async getSingleProduct({ commit }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      return getSingleProduct(id).then((res) => {
-        // 資料轉換層
-        const Adapter = new SingleProductData(res.data);
-        commit('SET_FORM_DATA', Adapter.transform());
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
+      const result = await getSingleProduct(id);
+      const Adapter = new SingleProductData(result.data);
+      commit('SET_FORM_DATA', Adapter.transform());
+      commit('Loading/LOADING', false, {
+        root: true,
       });
+      return result;
     },
     // 新增 產品
-    createProduct({ commit, dispatch, state }) {
+    async createProduct({ commit, dispatch, state }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
       // 資料轉換層
       const Adapter = new ProductForm(state.formData);
-      createProduct(Adapter.transform()).then(() => {
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
-        notify('訊息', '新增成功', 'success');
-        commit('Dialog/CLEAR_DIALOG', false, {
-          root: true,
-        });
-        dispatch('getProduct');
+      const rules = await createProduct(Adapter.transform());
+      commit('Loading/LOADING', false, {
+        root: true,
       });
+      notify('訊息', '新增成功', 'success');
+      commit('Dialog/CLEAR_DIALOG', false, {
+        root: true,
+      });
+      dispatch('getProduct');
+      return rules;
     },
     // 修改 產品資料
-    editProduct({ state, dispatch, commit }) {
+    async editProduct({ state, dispatch, commit }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
       // 資料轉換層
       const Adapter = new ProductForm(state.formData);
-      editProduct(state.formData.id, Adapter.transform()).then(() => {
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
-        notify('訊息', '修改成功', 'success');
-        commit('Dialog/CLEAR_DIALOG', false, {
-          root: true,
-        });
-        dispatch('getProduct');
+      const result = await editProduct(state.formData.id, Adapter.transform());
+      commit('Loading/LOADING', false, {
+        root: true,
       });
+      notify('訊息', '修改成功', 'success');
+      commit('Dialog/CLEAR_DIALOG', false, {
+        root: true,
+      });
+      dispatch('getProduct');
+      return result;
     },
     // 刪除 產品資料
-    deleteProduct({ commit, dispatch }, id) {
+    async deleteProduct({ commit, dispatch }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      deleteProduct(id).then(() => {
-        notify('訊息', '删除成功', 'success');
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
-        dispatch('getProduct');
+      const result = await deleteProduct(id);
+      notify('訊息', '删除成功', 'success');
+      commit('Loading/LOADING', false, {
+        root: true,
       });
+      dispatch('getProduct');
+      return result;
     },
     open({ commit }, { type }) {
       if (type.method === 'add') {
@@ -282,13 +281,14 @@ export default {
         });
       }
     },
-    deleteOpen({ dispatch }, { type }) {
+    async deleteOpen({ dispatch }, { type }) {
       if (type.method === 'delete') {
-        messageBox().then(() => {
+        try {
+          await messageBox();
           dispatch('deleteProduct', type.row.id);
-        }).catch(() => {
+        } catch (error) {
           notify('info', '已取消删除', 'info');
-        });
+        }
       }
     },
   },

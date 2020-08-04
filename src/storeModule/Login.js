@@ -5,7 +5,8 @@ import router from '@/router';
 export default {
   namespaced: true,
   actions: {
-    CheckLogin({ commit }) {
+    async CheckLogin({ commit }) {
+      let result;
       commit('Loading/LOADING', true, {
         root: true,
       });
@@ -13,26 +14,31 @@ export default {
         /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
         '$1',
       );
-      return checkLogin(cookieToken).then(() => {
+      try {
+        result = await checkLogin(cookieToken);
         commit('Loading/LOADING', false, {
           root: true,
         });
-      }).catch((error) => {
+      } catch (error) {
         if (error === 422) {
           commit('Loading/LOADING', false, {
             root: true,
           });
           router.push('/login');
+          result = error;
         }
-      });
+      }
+      return result;
     },
-    Login({ commit }, from) {
+    async Login({ commit }, from) {
+      let result;
       commit('Loading/LOADING', true, {
         root: true,
       });
-      login(from).then((res) => {
-        const { token } = res;
-        const { expired } = res;
+      try {
+        result = await login(from);
+        const { token } = result;
+        const { expired } = result;
         document.cookie = `token=${token};expires=${new Date(
           expired * 1000,
         )};`;
@@ -41,11 +47,14 @@ export default {
           root: true,
         });
         router.push('/');
-      }).catch(() => {
+      } catch (error) {
         notify('提示', '登入失敗', 'error');
-      });
+        result = error;
+      }
+      return result;
     },
-    Logout({ commit }) {
+    async Logout({ commit }) {
+      let result;
       commit('Loading/LOADING', true, {
         root: true,
       });
@@ -53,21 +62,24 @@ export default {
         /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
         '$1',
       );
-      logout(cookieToken).then(() => {
+      try {
+        result = await logout(cookieToken);
         commit('Loading/LOADING', false, {
           root: true,
         });
         notify('提示', '登出成功', 'success');
         document.cookie = 'token=;expires=;';
         router.push('/login');
-      }).catch((error) => {
+      } catch (error) {
         if (error === 422) {
           commit('Loading/LOADING', false, {
             root: true,
           });
           router.push('/login');
         }
-      });
+        result = error;
+      }
+      return result;
     },
   },
 };

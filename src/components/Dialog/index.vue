@@ -73,11 +73,16 @@ export default {
       const isValid = await this.$refs.observer.validate();
       this.$emit('submit', isValid, this.$store.state.Dialog.dialogIsEdit === true ? 'edit' : 'add');
     },
-    dialogClose(done) {
-      messageBox('確認關閉？').then(() => {
+    async dialogClose(done) {
+      let result;
+      try {
+        result = await messageBox('確認關閉？');
         done();
         this.$emit('dialogCloseHandler', done);
-      });
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   },
 };

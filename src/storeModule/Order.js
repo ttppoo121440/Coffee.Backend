@@ -33,47 +33,47 @@ export default {
   }),
   actions: {
     // 取得 訂單資料
-    getOrder({ commit, rootState }) {
+    async getOrder({ commit, rootState }) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      getOrder(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`).then((res) => {
-        commit('Pagination/SET_TOTAL', res.meta.pagination.total, {
-          root: true,
-        });
-        commit('Pagination/SET_TOTAL_PAGES', res.meta.pagination.total_pages, {
-          root: true,
-        });
-        const Adapter = new OrderList(res.data);
-        commit('GET_TABLE_DATA', Adapter.transform());
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
+      const result = await getOrder(`page=${rootState.Pagination.current}&paged=${rootState.Pagination.paged}`);
+      commit('Pagination/SET_TOTAL', result.meta.pagination.total, {
+        root: true,
       });
+      commit('Pagination/SET_TOTAL_PAGES', result.meta.pagination.total_pages, {
+        root: true,
+      });
+      const Adapter = new OrderList(result.data);
+      commit('GET_TABLE_DATA', Adapter.transform());
+      commit('Loading/LOADING', false, {
+        root: true,
+      });
+      return result;
     },
     // 訂單 設定指定訂單為已付款
-    setOrderPaid({ commit }, id) {
+    async setOrderPaid({ commit }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      setOrderPaid(id).then(() => {
-        notify('訊息', '此訂單設定付款成功', 'success');
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
+      const result = await setOrderPaid(id);
+      notify('訊息', '此訂單設定付款成功', 'success');
+      commit('Loading/LOADING', false, {
+        root: true,
       });
+      return result;
     },
     // 訂單 設定指定訂單為未付款
-    setOrderUnpaid({ commit }, id) {
+    async setOrderUnpaid({ commit }, id) {
       commit('Loading/LOADING', true, {
         root: true,
       });
-      setOrderUnpaid(id).then(() => {
-        notify('訊息', '此訂單設定未付款成功', 'success');
-        commit('Loading/LOADING', false, {
-          root: true,
-        });
+      const result = await setOrderUnpaid(id);
+      notify('訊息', '此訂單設定未付款成功', 'success');
+      commit('Loading/LOADING', false, {
+        root: true,
       });
+      return result;
     },
   },
   mutations: {
