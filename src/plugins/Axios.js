@@ -73,25 +73,17 @@ function axiosMethod(method, url, data = {}) {
 }
 
 export function post(url, data = {}) {
-  return new Promise((resolve) => {
-    resolve(axiosMethod('post', url, data));
-  });
+  return axiosMethod('post', url, data);
 }
 
 export function get(url, data = {}) {
-  return new Promise((resolve) => {
-    resolve(axiosMethod('get', url, data));
-  });
+  return axiosMethod('get', url, data);
 }
 
 export function patch(url, data = {}) {
-  return new Promise((resolve) => {
-    resolve(axiosMethod('patch', url, data));
-  });
+  return axiosMethod('patch', url, data);
 }
 
 export function del(url) {
-  return new Promise((resolve) => {
-    resolve(axiosMethod('delete', url));
-  });
+  return axiosMethod('delete', url);
 }
