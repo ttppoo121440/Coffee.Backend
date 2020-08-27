@@ -1,7 +1,7 @@
 <template>
   <form
     class="form"
-    @submit.prevent="$emit('Login',from)"
+    @submit.prevent="Login(from)"
   >
     <input
       v-model="from.email"
@@ -39,6 +39,11 @@ export default {
         password: '',
       },
     };
+  },
+  methods: {
+    Login(from) {
+      this.$emit('Login', from);
+    },
   },
 };
 </script>

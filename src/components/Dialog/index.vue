@@ -1,3 +1,5 @@
+<template src="./template.html" />
+
 <script>
 import { messageBox } from '@/plugins/ElementUI';
 import Input from './components/Input';
@@ -88,5 +90,4 @@ export default {
 };
 </script>
 
-<template src="./template.html" />
 <style src="./style.css"></style>

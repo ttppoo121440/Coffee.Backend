@@ -1,3 +1,5 @@
+<template src="./template.html" />
+
 <script>
 import CheckBoxGroup from './CheckBoxGroup';
 import Pagination from './Pagination';
@@ -104,5 +106,5 @@ export default {
   },
 };
 </script>
-<template src="./template.html" />
+
 <style src="./style.css"></style>
